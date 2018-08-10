@@ -9,16 +9,15 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private float speed;
 
-    private void Movements()
-    {
+    private void MoveVector() {
         speed = 5.0f;
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
         transform.Translate(Vector3.right * speed * horizontalInput * Time.deltaTime);
         transform.Translate(Vector3.up * speed * verticalInput * Time.deltaTime);
+    }
 
-
-        // Player Bounds
+    private void PlayerBounds() {
         if (transform.position.y > 0)
         {
             transform.position = new Vector3(transform.position.x, 0, 0);
@@ -36,6 +35,12 @@ public class Player : MonoBehaviour {
         {
             transform.position = new Vector3(-8, transform.position.y, 0);
         }
+    }
+
+    private void Movements()
+    {
+        MoveVector();
+        PlayerBounds();
     }
     
 	// Use this for initialization
