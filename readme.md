@@ -8,7 +8,7 @@ Learn the basic of Unity3d
 
 Unity3d
 
-#### With what resources am i learnig ? 📚
+#### What resources am i learning with ? 📚
 
 - [Course Unity3d](https://www.udemy.com/the-ultimate-guide-to-game-development-with-unity/)
 
