@@ -9,7 +9,7 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private float speed;
 
-    private void MoveVector() {
+    private void PlayerMove() {
         speed = 5.0f;
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
@@ -39,7 +39,7 @@ public class Player : MonoBehaviour {
 
     private void Movements()
     {
-        MoveVector();
+        PlayerMove();
         PlayerBounds();
     }
     
