@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     // GameObject
     [SerializeField]
     private GameObject _laserPrefab;
+    [SerializeField]
+    private GameObject _tripleShotPrefab;
     // Audio Source
     private AudioSource _musicLaser;
     // Float
@@ -17,6 +19,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _fireRate = 0.25f;
     private float _canFire = 0.0f;
+    // Boolean
+    public bool canTripleShot = false;
 
     private void LaserSong() {
         _musicLaser = GetComponent<AudioSource>();
@@ -53,19 +57,36 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void ShotLaser() {
+    private void TripleShot() {
+            if (Time.time > _canFire)
+            {
+               Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+               LaserSong();
+               _canFire = Time.time + _fireRate;
+            }
+    }
 
+    private void OneShot() {
+        if (Time.time > _canFire)
+        {
+            Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.88f, 0), Quaternion.identity);
+            LaserSong();
+            _canFire = Time.time + _fireRate;
+            Debug.Log("The time elapsed  of game is: " + Time.time);
+            Debug.Log("The value canFire is: " + _canFire);
+            Debug.Log("The value fireRate is: " + _fireRate);
+        }
+    }
+
+   
+    private void ShotLaser() {
         // If space key pressed or click left
         // spawn laser at player position
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
-            if(Time.time > _canFire) {
-                Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.88f, 0), Quaternion.identity);
-                LaserSong();
-                _canFire = Time.time + _fireRate;
-                Debug.Log("The time elapsed  of game is: " + Time.time);
-                Debug.Log("The value canFire is: " + _canFire);
-                Debug.Log("The value fireRate is: " + _fireRate);
-            }
+            if(canTripleShot) {
+                TripleShot();
+            } 
+              OneShot();
         }
     }
 
@@ -77,10 +98,17 @@ public class Player : MonoBehaviour
         ShotLaser();
     }
 
-	// Use this for initialization
-	void Start () {
-	}
-	
+    public IEnumerator TripleShotPowerupDownRoutine() {
+        yield return new WaitForSeconds(5.0f);
+        canTripleShot = false;
+    }
+
+    public void TripleShotPowerupOn() {
+        canTripleShot = true;
+        StartCoroutine(TripleShotPowerupDownRoutine());
+    }
+
+
 	// Update is called once per frame
 	void Update () {
         Movements();
